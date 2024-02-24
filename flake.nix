@@ -37,13 +37,16 @@
 
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
+          cobra-cli
           delve
           go
           gopls
           gotools
           go-tools
           gomod2nix.packages.${system}.default
+          sqlite
         ];
+        GOROOT = "${pkgs.go}/share/go";
       };
 
       formatter = pkgs.writeShellScriptBin "formatter" ''
