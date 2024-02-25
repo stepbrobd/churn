@@ -11,7 +11,6 @@ type Bonus struct {
 	Account string    // Foreign key to Account.ID
 	Start   time.Time // Bonus start date
 	End     time.Time // Bonus end date
-	Note    string    // User defined note
 }
 
 func (b *Bonus) Schema() string {
@@ -23,7 +22,6 @@ func (b *Bonus) Schema() string {
 	unit TEXT NOT NULL,
 	account VARCHAR(36) NOT NULL,
 	start DATETIME NOT NULL,
-	end DATETIME NOT NULL,
-	note TEXT
+	end DATETIME NOT NULL
 );`
 }

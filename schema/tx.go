@@ -3,12 +3,12 @@ package schema
 import "time"
 
 type Tx struct {
-	ID        string    // UUIDv7
-	Timestamp time.Time // Transaction timestamp
-	Account   string    // Foreign key to Account.ID
-	Amount    int       // Transaction amount
-	Category  string    // Transaction category: "dining", "travel", "grocery", "fuel", "other"
-	Note      string    // User defined note
+	ID          string    // UUIDv7
+	Timestamp   time.Time // Transaction timestamp
+	Account     string    // Foreign key to Account.ID
+	Amount      int       // Transaction amount
+	Category    string    // Transaction category: "dining", "travel", "grocery", "fuel", "other"
+	Description string    // User defined description
 }
 
 func (t *Tx) Schema() string {
@@ -18,6 +18,6 @@ func (t *Tx) Schema() string {
 	account VARCHAR(36) NOT NULL,
 	amount INTEGER NOT NULL,
 	category TEXT NOT NULL,
-	note TEXT
+	description TEXT
 );`
 }

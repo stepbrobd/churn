@@ -9,7 +9,6 @@ type Account struct {
 	Opened  time.Time // Account opening date
 	Closed  time.Time // Account closing date, nil if not closed
 	CL      int       // Credit limit, nil if charge card
-	Note    string    // User defined note
 }
 
 func (a *Account) Schema() string {
@@ -19,7 +18,6 @@ func (a *Account) Schema() string {
 	product VARCHAR(36) NOT NULL,
 	opened DATETIME NOT NULL,
 	closed DATETIME,
-	cl INTEGER,
-	note TEXT
+	cl INTEGER
 );`
 }
