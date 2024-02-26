@@ -8,9 +8,9 @@ type Bonus struct {
 	Spend   int       // Minimum spend to get the bonus
 	Bonus   int       // Bonus amount
 	Unit    string    // Bonus unit: "point", "dollar"
-	Account string    // Foreign key to Account.ID
 	Start   time.Time // Bonus start date
 	End     time.Time // Bonus end date
+	Account string    // Foreign key to Account.ID
 }
 
 func (b *Bonus) Schema() string {
@@ -20,8 +20,9 @@ func (b *Bonus) Schema() string {
 	spend INTEGER NOT NULL,
 	bonus INTEGER NOT NULL,
 	unit TEXT NOT NULL,
-	account VARCHAR(36) NOT NULL,
 	start DATETIME NOT NULL,
-	end DATETIME NOT NULL
+	end DATETIME NOT NULL,
+	account VARCHAR(36) NOT NULL,
+	FOREIGN KEY (account) REFERENCES account (id)
 );`
 }
