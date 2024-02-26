@@ -4,6 +4,7 @@ go 1.21.6
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/samonzeweb/godb v1.0.15
 	github.com/spf13/cobra v1.8.0
