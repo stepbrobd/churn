@@ -1,10 +1,10 @@
 package schema
 
 type Bank struct {
-	ID               string // UUIDv7
-	Name             string // Bank name
-	MaxAccount       int    // Maximum number of accounts within a certain period
-	MaxAccountPeriod int    // Period of maximum number of accounts, in days
+	ID               string `db:"id,key"`             // UUIDv7
+	Name             string `db:"name"`               // Bank name
+	MaxAccount       int    `db:"max_account"`        // Maximum number of accounts within a certain period
+	MaxAccountPeriod int    `db:"max_account_period"` // Period of maximum number of accounts, in days
 }
 
 func (b *Bank) Schema() string {

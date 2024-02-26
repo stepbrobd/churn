@@ -1,10 +1,10 @@
 package schema
 
 type Product struct {
-	ID     string // UUIDv7
-	Name   string // Product name
-	Issuer string // Foreign key to Bank.ID
-	Fee    int    // Annual fee
+	ID     string `db:"id,key"` // UUIDv7
+	Name   string `db:"name"`   // Product name
+	Issuer string `db:"issuer"` // Foreign key to Bank.ID
+	Fee    int    `db:"fee"`    // Annual fee
 }
 
 func (p *Product) Schema() string {
