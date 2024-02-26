@@ -19,7 +19,7 @@ func preRun(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	conn, err := sqlite.Init(cfg.DatabasePath())
+	conn, _, err := sqlite.Init(cfg.DatabasePath())
 	if err != nil {
 		return err
 	}
