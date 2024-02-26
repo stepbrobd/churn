@@ -12,17 +12,3 @@ type Bonus struct {
 	End     time.Time `db:"end"`     // Bonus end date
 	Account string    `db:"account"` // Foreign key to Account.ID
 }
-
-func (b *Bonus) Schema() string {
-	return `CREATE TABLE IF NOT EXISTS bonus (
-	id VARCHAR(36) PRIMARY KEY,
-	type TEXT NOT NULL,
-	spend INTEGER NOT NULL,
-	bonus INTEGER NOT NULL,
-	unit TEXT NOT NULL,
-	start DATETIME NOT NULL,
-	end DATETIME NOT NULL,
-	account VARCHAR(36) NOT NULL,
-	FOREIGN KEY (account) REFERENCES account (id)
-);`
-}

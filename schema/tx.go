@@ -10,15 +10,3 @@ type Tx struct {
 	Description string    `db:"description"` // User defined description
 	Account     string    `db:"account"`     // Foreign key to Account.ID
 }
-
-func (t *Tx) Schema() string {
-	return `CREATE TABLE IF NOT EXISTS tx (
-	id VARCHAR(36) PRIMARY KEY,
-	timestamp DATETIME NOT NULL,
-	amount INTEGER NOT NULL,
-	category TEXT NOT NULL,
-	description TEXT,
-	account VARCHAR(36) NOT NULL,
-	FOREIGN KEY (account) REFERENCES account (id)
-);`
-}

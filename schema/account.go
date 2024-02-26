@@ -10,14 +10,3 @@ type Account struct {
 	Closed  time.Time `db:"closed"`  // Account closing date, nil if not closed
 	CL      int       `db:"cl"`      // Credit limit, nil if charge card
 }
-
-func (a *Account) Schema() string {
-	return `CREATE TABLE IF NOT EXISTS account (
-	id VARCHAR(36) PRIMARY KEY,
-	name TEXT NOT NULL,
-	product VARCHAR(36) NOT NULL,
-	opened DATETIME NOT NULL,
-	closed DATETIME,
-	cl INTEGER
-);`
-}
