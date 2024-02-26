@@ -2,28 +2,83 @@ package cmd
 
 import (
 	"os"
+	"reflect"
+	"slices"
 
 	"github.com/spf13/cobra"
+	"github.com/stepbrobd/churn/internal/config"
+	"github.com/stepbrobd/churn/internal/sqlite"
+	"github.com/stepbrobd/churn/schema"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "churn",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+func preRun(cmd *cobra.Command, args []string) error {
+	cfg := config.Default()
+	if cfg.Exists() {
+		if err := cfg.Parse(); err != nil {
+			return err
+		}
+	}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	conn, err := sqlite.Init(cfg.DatabasePath())
+	if err != nil {
+		return err
+	}
+
+	actual := make([]string, 0)
+	expected := map[string]interface{}{
+		"account": &schema.Account{},
+		"bank":    &schema.Bank{},
+		"bonus":   &schema.Bonus{},
+		"product": &schema.Product{},
+		"reward":  &schema.Reward{},
+		"tx":      &schema.Tx{},
+	}
+
+	rows, err := conn.Query("SELECT name FROM sqlite_master WHERE type = 'table'")
+	if err != nil {
+		return err
+	}
+	for rows.Next() {
+		var name string
+		rows.Scan(&name)
+		actual = append(actual, name)
+	}
+
+	tx, err := conn.Begin()
+	if err != nil {
+		return err
+	}
+	for _, t := range reflect.ValueOf(expected).MapKeys() {
+		if !slices.Contains(actual, t.String()) {
+			query := reflect.ValueOf(expected).MapIndex(t).Elem().MethodByName("Schema").Call(nil)[0].String()
+			_, err := tx.Exec(query)
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
+		}
+	}
+	tx.Commit()
+
+	return nil
+}
+
+func postRun(cmd *cobra.Command, args []string) error {
+	return sqlite.Close()
+}
+
+var rootCmd = &cobra.Command{
+	Use:                "churn",
+	Short:              "Credit card churning management CLI",
+	PersistentPreRunE:  preRun,
+	PersistentPostRunE: postRun,
 }
 
 func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
 func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
