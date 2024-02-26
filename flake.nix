@@ -44,6 +44,7 @@
           gotools
           go-tools
           gomod2nix.packages.${system}.default
+          mysql80
           sqlite
           typst
           typstfmt
