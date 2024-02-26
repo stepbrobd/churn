@@ -9,25 +9,29 @@ import (
 )
 
 type Config struct {
-	ConfigPath string `env:"CONFIG_PATH" yaml:"config_path"`
-	ConfigSrc  string `env:"CONFIG_SRC" yaml:"config_src"`
-	DataPath   string `env:"DATA_PATH" yaml:"data_path"`
-	DataSrc    string `env:"DATA_SRC" yaml:"data_src"`
-	// Encrypted SQLite
-	// ...
+	ConfigPath string   `env:"CONFIG_PATH" yaml:"config_path"`
+	ConfigSrc  string   `env:"CONFIG_SRC" yaml:"config_src"`
+	DB         DBConfig `envPrefix:"DB_" yaml:"db"`
+}
+
+type DBConfig struct {
+	Driver string `env:"DRIVER" yaml:"driver"` // Currently supported: `mysql`, `sqlite3`
+	DSN    string `env:"DSN" yaml:"dsn"`
 }
 
 func Default() *Config {
 	return &Config{
 		ConfigPath: os.Getenv("HOME") + "/.config/churn",
 		ConfigSrc:  "churn.yaml",
-		DataPath:   os.Getenv("HOME") + "/.local/share/churn",
-		DataSrc:    "churn.db",
+		DB: DBConfig{
+			Driver: "sqlite3",
+			DSN:    "file://" + os.Getenv("HOME") + "/.local/share/churn/churn.db",
+		},
 	}
 }
 
 func (c *Config) Exists() bool {
-	_, err := os.Stat(c.ConfigurationPath())
+	_, err := os.Stat(filepath.Join(c.ConfigPath, c.ConfigSrc))
 	return !os.IsNotExist(err)
 }
 
@@ -38,21 +42,15 @@ func (c *Config) Parse() error {
 	}
 	defer f.Close()
 
+	// Parse YAML first
 	if err := yaml.NewDecoder(f).Decode(c); err != nil {
 		return err
 	}
 
+	// Environment variables override YAML
 	if err := env.ParseWithOptions(c, env.Options{Prefix: "CHURN_"}); err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func (c *Config) ConfigurationPath() string {
-	return filepath.Join(c.ConfigPath, c.ConfigSrc)
-}
-
-func (c *Config) DatabasePath() string {
-	return filepath.Join(c.DataPath, c.DataSrc)
 }
