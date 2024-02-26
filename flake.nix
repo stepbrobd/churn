@@ -45,6 +45,8 @@
           go-tools
           gomod2nix.packages.${system}.default
           sqlite
+          typst
+          typstfmt
         ];
         GOROOT = "${pkgs.go}/share/go";
       };
@@ -53,6 +55,7 @@
         set -eoux pipefail
         ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt .
         ${pkgs.go}/bin/gofmt -s -w .
+        ${pkgs.typstfmt}/bin/typstfmt **/*.typ
       '';
     });
 }
