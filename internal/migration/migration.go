@@ -1,9 +1,22 @@
 package migration
 
-import "github.com/stepbrobd/churn/internal/db"
+import (
+	"embed"
+	"io"
+
+	"github.com/stepbrobd/churn/internal/db"
+)
+
+//go:embed *.sql
+var migrations embed.FS
 
 func Exec() error {
 	conn, err := db.Connect()
+	if err != nil {
+		return err
+	}
+
+	files, err := migrations.ReadDir(".")
 	if err != nil {
 		return err
 	}
@@ -13,10 +26,23 @@ func Exec() error {
 		return err
 	}
 
-	_, err = tx.Exec(Migration20240226183804())
-	if err != nil {
-		tx.Rollback()
-		return err
+	for _, file := range files {
+		f, err := migrations.Open(file.Name())
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		q, err := io.ReadAll(f)
+		if err != nil {
+			return err
+		}
+
+		_, err = tx.Exec(string(q))
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
 	}
 
 	tx.Commit()
