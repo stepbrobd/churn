@@ -37,18 +37,17 @@ command-line tool).
 The motivation behind this project is my personal interest in credit card
 churing and have been annoyed by the lack of a good tool to help me keep track
 of my churing activities. I hope this tool can help me and other churing
-enthusiasts replace Google Sheets and other manual entry methods.
+enthusiasts replace to Google Sheets or other manual entry methods.
 
 = Functionalities
 
-The tool, named `churn`, will provide the following functionalities:
+The tool, named `churn`, at minimum, will provide the following functionalities:
 
 - Users can add new credit/charge cards, with cards' name, account opening date,
   annual fee, credit limit (if applicable).
-- Users can add new bonuses, with bonuses' name, type (e.g. sign-up bonus,
-  referral bonus, retention offers, regular spending bonus, etc.), the bonus
-  amount and unit, the minimum spending requirement, the bonus expiration date,
-  etc.
+- Users can add new bonuses, with bonuses' type (e.g. sign-up bonus, referral
+  bonus, retention offers, regular spending bonus, etc.), the bonus amount and
+  unit, the minimum spending requirement, the bonus expiration date, etc.
 - Users can add new transactions, with transactions' date, amount, category (e.g.
   dining, travel, grocery, etc.), and the card used.
 - Users can derive rewards earned from transactions, either in cash back or
@@ -71,12 +70,12 @@ acconut might be closed, etc.
 
 = Implementation
 
-The tool will be implemented in Go with SQLite as the database (as described
+The tool will be implemented in Go with MySQL as the database (as described
 above, entities like cards, bonuses, transactions, etc. have a clear schema,
 thus a relational database is a good fit). It's expected to be a command-line
 tool, and it should be able to compile down to a single binary. Some libraries
 that will be used include:
-- SQLite driver for Go
+- MySQL driver for Go
 - Cobra for command-line interface
 - Viper for configuration management
 - ...
@@ -86,26 +85,39 @@ With the correct setup, the program should be able to run on all major platforms
 The project structure will be organized as follow:
 
 ```txt
-- cmd/         # command-line interface related code
+- cmd/           # command-line interface related code
   - root.go
   - ...
-- doc/         # documentation
+- doc/           # documentation
   - ...
-- internal     # core application logic
-  - config/    # config parsing
-  - sqlite/    # session management
+- internal       # core application logic
+  - config/...   # config parsing
+  - db/          # session management
+    - mysql.go   # MySQL driver
+    - sqlite3.go # SQLite3 driver
+    - ...
+  - migration/   # database migrations
+    - 0001.sql   # initial schema
+    - *.sql      # other migrations
   - ...
 - schema/
-  - account.go # account entity with Go struct and SQL schema
-  - bank.go    # bank entity with Go struct and SQL schema
-  - bonus.go   # bonus entity with Go struct and SQL schema
-  - ...        # other entities
-- main.go      # entry point
-- go.{mod,sum} # module files
+  - account.go   # account entity with Go struct and SQL schema
+  - bank.go      # bank entity with Go struct and SQL schema
+  - bonus.go     # bonus entity with Go struct and SQL schema
+  - ...          # other entities
+- main.go        # entry point
+- go.{mod,sum}   # module files
 - readme.md
 - license.txt
 - ...
 ```
+
+Although the project will use MySQL as the database, it's possible to extend the
+tool to support other databases (e.g. PostgreSQL, SQLite, etc.) in the future,
+given the clear separation of the database layer from the core application
+logic. The database connections are managed by drivers and DSNs, thus, to extend
+support to other databases, we only need to change the driver, DSN, and minor
+change in SQL syntax (dialect) if necessary.
 
 = Conceptual Design
 
