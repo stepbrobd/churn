@@ -45,6 +45,7 @@
           go-tools
           gomod2nix.packages.${system}.default
           mysql80
+          sqlfluff
           sqlite
           typst
           typstfmt
@@ -56,6 +57,7 @@
         set -eoux pipefail
         ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt .
         ${pkgs.go}/bin/gofmt -s -w .
+        ${pkgs.sqlfluff}/bin/sqlfluff fix --dialect mysql
         ${pkgs.typstfmt}/bin/typstfmt **/*.typ
       '';
     });
