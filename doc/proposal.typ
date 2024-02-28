@@ -12,6 +12,12 @@
   due: datetime(year: 2024, month: 3, day: 1),
 )
 
+= Group Information
+
+Group name: SunY
+
+Group member: Yifei Sun
+
 = Introduction
 
 Credit card churing (or simply churing) is a term commonly used in multiple
@@ -119,9 +125,12 @@ logic. The database connections are managed by drivers and DSNs, thus, to extend
 support to other databases, we only need to change the driver, DSN, and minor
 change in SQL syntax (dialect) if necessary.
 
+#pagebreak()
+
 = Conceptual Design
 
-The tool will have the following entities:
+The tool will have the following entities (6 included, we'll add more if
+needed):
 
 ```txt
 +---------+                        +---------+                +--------------------+
@@ -173,8 +182,52 @@ In the implementation:
   fixed for each card product.
 - Transactions are associated with "Account"s.
 
+#pagebreak()
+
 = Activity Diagram
 
 ```txt
-
++-------+
+| Start |
++---+---+---+--------------+------------+
+    |       ^              ^            ^
+    v       | (quit)       |            |
++---+----+--+              |            |
+| Action |                 | (start transaction, rollback if cannot commit)
++---+----+---+-------------+------------+----------------+
+    |        |             |            |                |
+    v        v             v            |                v
++---+-+      +--------+    +--------+   |         +------+
+| Add |      | Update |    | Delete |   |         | Show |
++---+-+      +----+---+    +----+---+   |         +------+
+    |             |             |       |         v
+    v             v             v       | query db, application restrictions, rewards/
++---------------------------------------+ bonuses earned, tx history, etc.
+| Account (instantiation of Product)    | -> new (add), CLI (update), close (delete)
+| Bank (issuer of Product)              | -> new (add), restriction (update)
+| Bonus (associated with Account)       | -> new (add), extention (update), invalid (delete)
+| Product (card product)                | -> product (add), AF incr. (update), discont. (delete)
+| Reward (associated with Product)      | -> new (add), change (update), remove (delete)
+| Transaction (associated with Account) | -> add (add), add note (update), dispute (delete)
++---------------------------------------+
 ```
+
+Users starts the CLI, they can:
+- Add new cards, update existing cards, or delete cards.
+- Add new bonuses, extend existing bonuses, change bonus types, change bonus
+  amounts, change bonus validity, or delete bonuses, etc.
+- Add new transactions, add notes to transactions, dispute transactions, or delete
+  transactions, etc.
+- Add new banks, update bank restrictions, or delete banks, etc.
+- Add new card products, update card products, or delete card products, etc.
+- Add new rewards, change reward amounts, or delete rewards, etc.
+
+I'll provide commonly used banks, card products, and bonus types as defaults,
+users can add their own if they need to. The tool will also provide a way to
+query the information if users need to do so:
+- Users can query the database to get the rewards and bonuses they have earned,
+  the transactions they have made, the restrictions they have set to the bank,
+  etc.
+- Users can also query the database to get the information of the cards, bonuses,
+  transactions, etc. that they have added.
+
