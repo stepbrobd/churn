@@ -8,7 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"    // SQLite driver
 	"github.com/samonzeweb/godb"
 	"github.com/samonzeweb/godb/adapters"
-	"github.com/stepbrobd/churn/internal/config"
+	"ysun.co/churn/internal/config"
 )
 
 var instance = &db{}

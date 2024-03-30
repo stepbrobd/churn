@@ -6,7 +6,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/samonzeweb/godb/adapters"
 	adapter "github.com/samonzeweb/godb/adapters/mysql"
-	"github.com/stepbrobd/churn/internal/config"
+	"ysun.co/churn/internal/config"
 )
 
 func mysqlInit(cfg *config.Config) (*sql.DB, adapters.Adapter, error) {

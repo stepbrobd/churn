@@ -4,9 +4,9 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/stepbrobd/churn/internal/config"
-	"github.com/stepbrobd/churn/internal/db"
-	"github.com/stepbrobd/churn/internal/migration"
+	"ysun.co/churn/internal/config"
+	"ysun.co/churn/internal/db"
+	"ysun.co/churn/internal/migration"
 )
 
 func preRun(cmd *cobra.Command, args []string) error {

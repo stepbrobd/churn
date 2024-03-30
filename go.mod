@@ -1,4 +1,4 @@
-module github.com/stepbrobd/churn
+module ysun.co/churn
 
 go 1.21.6
 

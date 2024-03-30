@@ -1,6 +1,6 @@
 package main
 
-import "github.com/stepbrobd/churn/cmd"
+import "ysun.co/churn/cmd"
 
 func main() {
 	cmd.Execute()

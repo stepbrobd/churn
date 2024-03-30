@@ -4,7 +4,7 @@ import (
 	"embed"
 	"io"
 
-	"github.com/stepbrobd/churn/internal/db"
+	"ysun.co/churn/internal/db"
 )
 
 //go:embed *.sql

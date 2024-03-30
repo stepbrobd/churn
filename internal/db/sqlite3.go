@@ -8,7 +8,7 @@ import (
 
 	"github.com/samonzeweb/godb/adapters"
 	adapter "github.com/samonzeweb/godb/adapters/sqlite"
-	"github.com/stepbrobd/churn/internal/config"
+	"ysun.co/churn/internal/config"
 )
 
 func sqlite3Init(cfg *config.Config) (*sql.DB, adapters.Adapter, error) {
