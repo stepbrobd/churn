@@ -22,6 +22,7 @@ func preRun(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	// migrations are idempotent
 	err = migration.Exec()
 	if err != nil {
 		return err
