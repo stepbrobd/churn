@@ -1,9 +1,9 @@
 package schema
 
 type Reward struct {
-	ID        string  `db:"id,key"`     // UUIDv7
-	Category  string  `db:"category"`   // Reward category: "dining", "travel", "grocery", "fuel", "other"
-	Unit      string  `db:"unit"`       // Reward unit: "point", "dollar"
-	Reward    float32 `db:"reward"`     // Reward amount per dollar spent
-	ProductID string  `db:"product_id"` // Foreign key to product.id
+	ID        int     `db:"id,key,auto" json:"id"`
+	Category  string  `db:"category" json:"category"`
+	Unit      string  `db:"unit" json:"unit"`
+	Reward    float32 `db:"reward" json:"reward"`
+	ProductID int     `db:"product_id" json:"product_id"`
 }
