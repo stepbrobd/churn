@@ -1,10 +1,12 @@
 [
     {"bank_alias": "amex", "bank_name": "American Express", "max_account": 2, "max_account_period": 90, "max_account_scope": "bank"},
+    {"bank_alias": "barclays", "bank_name": "Barclays"},
     {"bank_alias": "boa", "bank_name": "Bank of America", "max_account": 3, "max_account_period": 365, "max_account_scope": "bank"},
     {"bank_alias": "c1", "bank_name": "Capital One", "max_account": 1, "max_account_period": 183, "max_account_scope": "bank"},
-    {"bank_alias": "jpmc", "bank_name": "Chase", "max_account": 5, "max_account_period": 730, "max_account_scope": "all"},
     {"bank_alias": "citi", "bank_name": "Citi", "max_account": 2, "max_account_period": 65, "max_account_scope": "bank"},
+    {"bank_alias": "discover", "bank_name": "Discover"},
+    {"bank_alias": "hsbc", "bank_name": "HSBC"},
+    {"bank_alias": "jpmc", "bank_name": "Chase", "max_account": 5, "max_account_period": 730, "max_account_scope": "all"},
     {"bank_alias": "usb", "bank_name": "US Bank"},
-    {"bank_alias": "wf", "bank_name": "Wells Fargo"},
-    {"bank_alias": "x1", "bank_name": "X1"}
+    {"bank_alias": "wf", "bank_name": "Wells Fargo"}
 ]

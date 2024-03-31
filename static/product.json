@@ -4,5 +4,6 @@
     {"product_alias": "amex_plat", "product_name": "American Express Platinum Card", "fee": 695.00, "issuing_bank": "amex"},
     {"product_alias": "amex_black", "product_name": "American Express Black Card", "fee": 5000.00, "issuing_bank": "amex"},
     {"product_alias": "amex_ed", "product_name": "AmEx EveryDay", "fee": 0.00, "issuing_bank": "amex"},
-    {"product_alias": "amex_edp", "product_name": "AmEx EveryDay Preferred", "fee": 95.00, "issuing_bank": "amex"}
+    {"product_alias": "amex_edp", "product_name": "AmEx EveryDay Preferred", "fee": 95.00, "issuing_bank": "amex"},
+    {"product_alias": "barclays_aa", "product_name": "Barclays AAdvantage Aviator Red", "fee": 99.00, "issuing_bank": "barclays"}
 ]
