@@ -29,12 +29,14 @@ func Exec() error {
 	for _, file := range files {
 		f, err := migrations.Open(file.Name())
 		if err != nil {
+			tx.Rollback()
 			return err
 		}
 		defer f.Close()
 
 		q, err := io.ReadAll(f)
 		if err != nil {
+			tx.Rollback()
 			return err
 		}
 

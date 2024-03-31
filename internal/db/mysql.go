@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/samonzeweb/godb/adapters"
@@ -22,8 +23,8 @@ func mysqlInit(cfg *config.Config) (*sql.DB, adapters.Adapter, error) {
 		return nil, nil, err
 	}
 
-	conn.Exec("CREATE DATABASE IF NOT EXISTS " + db)
-	conn.Exec("USE " + db)
+	conn.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", db))
+	conn.Exec(fmt.Sprintf("USE %s;", db))
 
 	return conn, adapter.Adapter, nil
 }

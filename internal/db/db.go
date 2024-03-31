@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"sync"
 
-	_ "github.com/go-sql-driver/mysql" // MySQL driver
-	_ "github.com/mattn/go-sqlite3"    // SQLite driver
 	"github.com/samonzeweb/godb"
 	"github.com/samonzeweb/godb/adapters"
 	"ysun.co/churn/internal/config"
@@ -21,6 +19,7 @@ type db struct {
 
 func Init(cfg *config.Config) error {
 	var err error
+
 	instance.once.Do(func() {
 		switch cfg.DB.Driver {
 		case "mysql":
@@ -30,9 +29,11 @@ func Init(cfg *config.Config) error {
 		default:
 			err = sql.ErrConnDone
 		}
+
 		if err != nil {
 			return
 		}
+
 		err = instance.conn.Ping()
 		if err != nil {
 			return
@@ -46,6 +47,7 @@ func Connect() (*sql.DB, error) {
 	if instance.conn == nil {
 		return nil, sql.ErrConnDone
 	}
+
 	return instance.conn, nil
 }
 
@@ -61,9 +63,9 @@ func Tables() ([]string, error) {
 	var query string
 	switch instance.adpt.DriverName() {
 	case "mysql":
-		query = "SHOW TABLES"
+		query = "SHOW TABLES;"
 	case "sqlite3":
-		query = "SELECT name FROM sqlite_master WHERE type = 'table'"
+		query = "SELECT name FROM sqlite_master WHERE type = 'table';"
 	}
 
 	rows, err := instance.conn.Query(query)
