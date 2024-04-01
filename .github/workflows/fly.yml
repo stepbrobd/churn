@@ -1,0 +1,21 @@
+name: "Fly"
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  Fly:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v4"
+        name: "Checkout"
+        with:
+          fetch-depth: 0
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        name: "Setup"
+      - name: "Deploy"
+        run: flyctl deploy --remote-only --no-cache
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
