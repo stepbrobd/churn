@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -108,6 +109,8 @@ var bankImportCmd = &cobra.Command{
 			db, _ := db.Connect()
 			bank.Add(db)
 		}
+
+		fmt.Printf("Imported %d bank(s)\n", len(banks))
 	},
 }
 
