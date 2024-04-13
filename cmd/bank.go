@@ -1,16 +1,12 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"strings"
 
 	"github.com/spf13/cobra"
 
 	"ysun.co/churn/internal/db"
+	"ysun.co/churn/internal/lib"
 	"ysun.co/churn/internal/ui/form"
 	"ysun.co/churn/schema"
 )
@@ -72,37 +68,9 @@ var bankImportCmd = &cobra.Command{
 		uri := args[0]
 		banks := make([]*schema.Bank, 0)
 
-		if strings.HasPrefix(uri, "http://") || strings.HasPrefix(uri, "https://") {
-			// download the file
-			res, err := http.Get(uri)
-			if err != nil {
-				panic(err)
-			}
-			defer res.Body.Close()
-
-			// read the file
-			body, err := io.ReadAll(res.Body)
-			if err != nil {
-				panic(err)
-			}
-
-			// unmarshal the file
-			err = json.Unmarshal(body, &banks)
-			if err != nil {
-				panic(err)
-			}
-		} else {
-			// read the file
-			body, err := os.ReadFile(uri)
-			if err != nil {
-				panic(err)
-			}
-
-			// unmarshal the file
-			err = json.Unmarshal(body, &banks)
-			if err != nil {
-				panic(err)
-			}
+		err := lib.Import(uri, &banks)
+		if err != nil {
+			panic(err)
 		}
 
 		for _, bank := range banks {
