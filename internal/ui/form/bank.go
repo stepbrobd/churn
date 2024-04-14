@@ -40,7 +40,7 @@ func FormBankAdd(bank *schema.Bank) error {
 					huh.NewOption("All", "all"),
 					huh.NewOption("Bank", "bank"),
 				).
-				Value(&bank.MaxAccountScope),
+				Value(&bank.MaxAccountScope.String),
 		),
 		huh.NewGroup(
 			huh.NewConfirm().
@@ -58,8 +58,8 @@ func FormBankAdd(bank *schema.Bank) error {
 		os.Exit(0)
 	}
 
-	bank.MaxAccount, _ = strconv.Atoi(maxA)
-	bank.MaxAccountPeriod, _ = strconv.Atoi(maxAP)
+	bank.MaxAccount.Int64, _ = strconv.ParseInt(maxA, 10, 64)
+	bank.MaxAccountPeriod.Int64, _ = strconv.ParseInt(maxAP, 10, 64)
 
 	return nil
 }

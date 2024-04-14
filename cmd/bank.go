@@ -3,10 +3,13 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/charmbracelet/bubbles/table"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
 
 	"ysun.co/churn/internal/db"
 	"ysun.co/churn/internal/lib"
+	"ysun.co/churn/internal/ui"
 	"ysun.co/churn/internal/ui/form"
 	"ysun.co/churn/schema"
 )
@@ -17,7 +20,40 @@ var bankCmd = &cobra.Command{
 	Short: "Manage banks (add, delete, edit)",
 	Long:  "Open a interactive TUI to manage banks, add, delete, edit, etc.",
 	Run: func(cmd *cobra.Command, args []string) {
+		db := db.Query()
+		banks := make([]*schema.Bank, 0)
+		err := db.Select(&banks).Do()
+		if err != nil {
+			panic(err)
+		}
 
+		columns := []table.Column{
+			{Title: "Name", Width: 25},
+			{Title: "Alias", Width: 15},
+			// {Title: "Max Account", Width: 12},
+			// {Title: "Max Account Period", Width: 18},
+			// {Title: "Max Account Scope", Width: 17},
+		}
+
+		rows := make([]table.Row, 0)
+		for _, bank := range banks {
+			rows = append(rows, table.Row{
+				bank.BankName,
+				bank.BankAlias,
+				// strconv.FormatInt(bank.MaxAccount.Int64, 10),
+				// strconv.FormatInt(bank.MaxAccountPeriod.Int64, 10),
+				// bank.MaxAccountScope.String,
+			})
+		}
+
+		t := table.New(
+			table.WithColumns(columns),
+			table.WithRows(rows),
+			table.WithFocused(true),
+		)
+
+		m := ui.ModelTable{Table: t}
+		tea.NewProgram(m).Run()
 	},
 }
 
@@ -55,6 +91,8 @@ var bankDeleteCmd = &cobra.Command{
 
 		db, _ := db.Connect()
 		bank.Delete(db)
+
+		fmt.Printf("Deleted bank %s\n", bank.BankAlias)
 	},
 }
 
@@ -73,8 +111,8 @@ var bankImportCmd = &cobra.Command{
 			panic(err)
 		}
 
+		db, _ := db.Connect()
 		for _, bank := range banks {
-			db, _ := db.Connect()
 			bank.Add(db)
 		}
 
