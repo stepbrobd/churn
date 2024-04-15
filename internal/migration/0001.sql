@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS account
     product_id INT NOT NULL,
     opened DATETIME,
     closed DATETIME,
-    cl DECIMAL,
+    cl DECIMAL NOT NULL,
     FOREIGN KEY (product_id) REFERENCES product (
         id
     ) ON DELETE CASCADE ON UPDATE CASCADE

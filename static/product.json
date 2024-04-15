@@ -5,5 +5,11 @@
     {"product_alias": "amex_black", "product_name": "American Express Black Card", "fee": 5000.00, "issuing_bank": "amex"},
     {"product_alias": "amex_ed", "product_name": "AmEx EveryDay", "fee": 0.00, "issuing_bank": "amex"},
     {"product_alias": "amex_edp", "product_name": "AmEx EveryDay Preferred", "fee": 95.00, "issuing_bank": "amex"},
-    {"product_alias": "barclays_aa", "product_name": "Barclays AAdvantage Aviator Red", "fee": 99.00, "issuing_bank": "barclays"}
+    {"product_alias": "barclays_aa", "product_name": "Barclays AAdvantage Aviator Red", "fee": 99.00, "issuing_bank": "barclays"},
+    {"product_alias": "c1_v", "product_name": "Capital One Venture", "fee": 95.00, "issuing_bank": "c1"},
+    {"product_alias": "c1_v1", "product_name": "Capital One VentureOne", "fee": 0.00, "issuing_bank": "c1"},
+    {"product_alias": "c1_vx", "product_name": "Capital One Venture X", "fee": 395.00, "issuing_bank": "c1"},
+    {"product_alias": "discover_it", "product_name": "Discover it", "fee": 0.00, "issuing_bank": "discover"},
+    {"product_alias": "discover_im", "product_name": "Discover it Miles", "fee": 0.00, "issuing_bank": "discover"},
+    {"product_alias": "uar", "product_name": "U.S. Bank Altitude Reserve", "fee": 400.00, "issuing_bank": "usb"}
 ]
