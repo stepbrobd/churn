@@ -79,12 +79,21 @@ var bankAddCmd = &cobra.Command{
 }
 
 // churn bank delete --
+var forceBankDeletion bool
 var bankDeleteCmd = &cobra.Command{
 	Use:   "delete <bank alias>",
 	Short: "Delete a bank", // bank alias
 	Long:  "Delete a bank by its alias, note that this will also delete all products, accounts, transactions, etc. associated with the bank.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		if !forceBankDeletion {
+			fmt.Println("This will delete the bank and all its associated data.")
+			confirm := lib.Confirm()
+			if !confirm {
+				return
+			}
+		}
+
 		bank := &schema.Bank{
 			BankAlias: args[0],
 		}
@@ -121,6 +130,8 @@ var bankImportCmd = &cobra.Command{
 }
 
 func init() {
+	bankDeleteCmd.Flags().BoolVarP(&forceBankDeletion, "force", "f", false, "Force delete the bank and all its associated data")
+
 	rootCmd.AddCommand(bankCmd)
 	bankCmd.AddCommand(bankAddCmd)
 	bankCmd.AddCommand(bankDeleteCmd)

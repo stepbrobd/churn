@@ -76,12 +76,20 @@ var productAddCmd = &cobra.Command{
 }
 
 // churn product delete --
+var forceProductDeletion bool
 var productDeleteCmd = &cobra.Command{
 	Use:   "delete <product alias>",
 	Short: "Delete a product", // product alias
 	Long:  "Delete a product by its alias, note that this will also delete all accounts, rewards, transactions, etc. associated with the product.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		if !forceProductDeletion {
+			fmt.Println("This will delete the product and all its associated data.")
+			if !lib.Confirm() {
+				return
+			}
+		}
+
 		product := &schema.Product{
 			ProductAlias: args[0],
 		}
@@ -118,6 +126,8 @@ var productImportCmd = &cobra.Command{
 }
 
 func init() {
+	productDeleteCmd.Flags().BoolVarP(&forceProductDeletion, "force", "f", false, "Force deletion the product and all its associated data")
+
 	rootCmd.AddCommand(productCmd)
 	productCmd.AddCommand(productAddCmd)
 	productCmd.AddCommand(productDeleteCmd)
