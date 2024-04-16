@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
@@ -23,7 +24,8 @@ var productCmd = &cobra.Command{
 		products := make([]*schema.Product, 0)
 		err := db.SelectFrom("product").Do(&products)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch products")
+			os.Exit(1)
 		}
 
 		columns := []table.Column{
@@ -67,7 +69,8 @@ var productAddCmd = &cobra.Command{
 
 		err := form.FormProductAdd(product)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to add product")
+			os.Exit(1)
 		}
 
 		db, _ := db.Connect()
@@ -113,7 +116,8 @@ var productImportCmd = &cobra.Command{
 
 		err := lib.Import(uri, &products)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to import product(s)")
+			os.Exit(1)
 		}
 
 		db, _ := db.Connect()

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/charmbracelet/bubbles/table"
@@ -26,19 +27,22 @@ var bonusCmd = &cobra.Command{
 		bonuses := make([]*schema.Bonus, 0)
 		err = db.SelectFrom("bonus").Do(&bonuses)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch bonuses")
+			os.Exit(1)
 		}
 
 		accounts := make([]*schema.Account, 0)
 		err = db.SelectFrom("account").Do(&accounts)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch accounts")
+			os.Exit(1)
 		}
 
 		products := make([]*schema.Product, 0)
 		err = db.SelectFrom("product").Do(&products)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch products")
+			os.Exit(1)
 		}
 
 		columns := []table.Column{
@@ -104,7 +108,8 @@ var bonusAddCmd = &cobra.Command{
 
 		err := form.FormBonusAdd(bonus)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to add bonus")
+			os.Exit(1)
 		}
 
 		db, _ := db.Connect()

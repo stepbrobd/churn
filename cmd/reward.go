@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/charmbracelet/bubbles/table"
@@ -26,13 +27,15 @@ var rewardCmd = &cobra.Command{
 		rewards := make([]*schema.Reward, 0)
 		err = db.SelectFrom("reward").Do(&rewards)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch rewards")
+			os.Exit(1)
 		}
 
 		products := make([]*schema.Product, 0)
 		err = db.SelectFrom("product").Do(&products)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch products")
+			os.Exit(1)
 		}
 
 		columns := []table.Column{
@@ -83,7 +86,8 @@ var rewardAddCmd = &cobra.Command{
 
 		err := form.FormRewardAdd(reward)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to add reward")
+			os.Exit(1)
 		}
 
 		db, _ := db.Connect()

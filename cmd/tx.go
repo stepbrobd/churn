@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/charmbracelet/bubbles/table"
@@ -26,19 +27,22 @@ var txCmd = &cobra.Command{
 		txs := make([]*schema.Tx, 0)
 		err = db.SelectFrom("tx").Do(&txs)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch transactions")
+			os.Exit(1)
 		}
 
 		accounts := make([]*schema.Account, 0)
 		err = db.SelectFrom("account").Do(&accounts)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch accounts")
+			os.Exit(1)
 		}
 
 		products := make([]*schema.Product, 0)
 		err = db.SelectFrom("product").Do(&products)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to fetch products")
+			os.Exit(1)
 		}
 
 		columns := []table.Column{
@@ -100,7 +104,8 @@ var txAddCmd = &cobra.Command{
 
 		err := form.FormTxAdd(tx)
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to add transaction")
+			os.Exit(1)
 		}
 
 		db, _ := db.Connect()

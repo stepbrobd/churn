@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"ysun.co/churn/internal/migration"
@@ -23,7 +24,8 @@ var migrationListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		names, err := migration.List()
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to list migrations")
+			os.Exit(1)
 		}
 
 		for i, name := range names {
