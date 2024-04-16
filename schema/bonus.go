@@ -3,6 +3,8 @@ package schema
 import (
 	"database/sql"
 	"time"
+
+	self "ysun.co/churn/internal/db"
 )
 
 type Bonus struct {
@@ -27,10 +29,10 @@ func (b *Bonus) Add(db *sql.DB) (sql.Result, error) {
 	// foreign key constraint enforced at frontend
 	stmt := "INSERT INTO bonus (id, bonus_type, spend, bonus_amount, unit, bonus_start, bonus_end, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
-	return db.Exec(stmt, b.ID, b.BonusType, b.Spend, b.BonusAmount, b.Unit, b.BonusStart, b.BonusEnd, b.AccountID)
+	return self.ExecInTx(db, stmt, b.ID, b.BonusType, b.Spend, b.BonusAmount, b.Unit, b.BonusStart, b.BonusEnd, b.AccountID)
 }
 
 func (b *Bonus) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM bonus WHERE id = ?"
-	return db.Exec(stmt, b.ID)
+	return self.ExecInTx(db, stmt, b.ID)
 }

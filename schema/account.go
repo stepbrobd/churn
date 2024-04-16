@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/guregu/null/v5"
+	self "ysun.co/churn/internal/db"
 )
 
 type Account struct {
@@ -40,10 +41,10 @@ func (a *Account) Add(db *sql.DB) (sql.Result, error) {
 	// foreign key constraint enforced at frontend
 	stmt := "INSERT INTO account (id, product_id, opened, closed, cl) VALUES (?, ?, ?, ?, ?)"
 
-	return db.Exec(stmt, a.ID, a.ProductID, opened, closed, a.CL)
+	return self.ExecInTx(db, stmt, a.ID, a.ProductID, opened, closed, a.CL)
 }
 
 func (a *Account) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM account WHERE id = ?"
-	return db.Exec(stmt, a.ID)
+	return self.ExecInTx(db, stmt, a.ID)
 }

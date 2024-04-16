@@ -83,3 +83,18 @@ func Tables() ([]string, error) {
 
 	return tables, nil
 }
+
+func ExecInTx(db *sql.DB, stmt string, args ...any) (sql.Result, error) {
+	tx, err := db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := tx.Exec(stmt, args...)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	return result, tx.Commit()
+}

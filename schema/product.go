@@ -2,6 +2,8 @@ package schema
 
 import (
 	"database/sql"
+
+	self "ysun.co/churn/internal/db"
 )
 
 type Product struct {
@@ -24,10 +26,10 @@ func (p *Product) Add(db *sql.DB) (sql.Result, error) {
 	// foreign key constraint enforced at frontend
 	stmt := "INSERT INTO product (id, product_alias, product_name, fee, issuing_bank) VALUES (?, ?, ?, ?, ?)"
 
-	return db.Exec(stmt, p.ID, p.ProductAlias, p.ProductName, p.Fee, p.IssuingBank)
+	return self.ExecInTx(db, stmt, p.ID, p.ProductAlias, p.ProductName, p.Fee, p.IssuingBank)
 }
 
 func (p *Product) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM product WHERE product_alias = ?"
-	return db.Exec(stmt, p.ProductAlias)
+	return self.ExecInTx(db, stmt, p.ProductAlias)
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/guregu/null/v5"
+	self "ysun.co/churn/internal/db"
 )
 
 type Bank struct {
@@ -45,12 +46,9 @@ func (b *Bank) Add(db *sql.DB) (sql.Result, error) {
 		maxAccountScope = fmt.Sprintf("'%s'", b.MaxAccountScope.String)
 	}
 
-	stmt := fmt.Sprintf(
-		"INSERT INTO bank (bank_alias, bank_name, max_account, max_account_period, max_account_scope) VALUES ('%s', '%s', %s, %s, %s)",
-		b.BankAlias, b.BankName, maxAccount, maxAccountPeriod, maxAccountScope,
-	)
+	stmt := "INSERT INTO bank (bank_alias, bank_name, max_account, max_account_period, max_account_scope) VALUES (?, ?, ?, ?, ?)"
 
-	return db.Exec(stmt)
+	return self.ExecInTx(db, stmt, b.BankAlias, b.BankName, maxAccount, maxAccountPeriod, maxAccountScope)
 }
 
 func (b *Bank) Delete(db *sql.DB) (sql.Result, error) {
@@ -58,6 +56,6 @@ func (b *Bank) Delete(db *sql.DB) (sql.Result, error) {
 		return nil, fmt.Errorf("bank_alias is required")
 	}
 
-	stmt := fmt.Sprintf("DELETE FROM bank WHERE bank_alias = '%s'", b.BankAlias)
-	return db.Exec(stmt)
+	stmt := "DELETE FROM bank WHERE bank_alias = ?"
+	return self.ExecInTx(db, stmt, b.BankAlias)
 }

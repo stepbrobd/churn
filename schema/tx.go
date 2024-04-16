@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/guregu/null/v5"
+	self "ysun.co/churn/internal/db"
 )
 
 type Tx struct {
@@ -34,10 +35,10 @@ func (t *Tx) Add(db *sql.DB) (sql.Result, error) {
 	// foreign key constraint enforced at frontend
 	stmt := "INSERT INTO tx (id, tx_timestamp, amount, category, note, account_id) VALUES (?, ?, ?, ?, ?, ?)"
 
-	return db.Exec(stmt, t.ID, t.TxTimestamp, t.Amount, t.Category, note, t.AccountID)
+	return self.ExecInTx(db, stmt, t.ID, t.TxTimestamp, t.Amount, t.Category, note, t.AccountID)
 }
 
 func (t *Tx) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM tx WHERE id = ?"
-	return db.Exec(stmt, t.ID)
+	return self.ExecInTx(db, stmt, t.ID)
 }

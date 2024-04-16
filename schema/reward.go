@@ -1,6 +1,10 @@
 package schema
 
-import "database/sql"
+import (
+	"database/sql"
+
+	self "ysun.co/churn/internal/db"
+)
 
 type Reward struct {
 	ID        int     `db:"id,key,auto" json:"id"`
@@ -20,10 +24,10 @@ func (r *Reward) Add(db *sql.DB) (sql.Result, error) {
 
 	stmt := "INSERT INTO reward (id, category, unit, reward, product_id) VALUES (?, ?, ?, ?, ?)"
 
-	return db.Exec(stmt, r.ID, r.Category, r.Unit, r.Reward, r.ProductID)
+	return self.ExecInTx(db, stmt, r.ID, r.Category, r.Unit, r.Reward, r.ProductID)
 }
 
 func (r *Reward) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM reward WHERE id = ?"
-	return db.Exec(stmt, r.ID)
+	return self.ExecInTx(db, stmt, r.ID)
 }

@@ -44,8 +44,10 @@ var migrationExecCmd = &cobra.Command{
 		name := args[0]
 		err := migration.Exec(name)
 		if err != nil {
-			fmt.Printf("Error executing migration '%s': %s\n", name, err)
+			fmt.Printf("Failed when executing migration '%s': %s\n", name, err)
+			os.Exit(1)
 		}
+
 		fmt.Printf("Migration '%s' executed successfully\n", name)
 	},
 }
