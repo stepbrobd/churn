@@ -16,7 +16,7 @@ func FormProductAdd(product *schema.Product) error {
 
 	db := db.Query()
 	banks := make([]*schema.Bank, 0)
-	err := db.Select(&banks).Do()
+	err := db.SelectFrom("bank").Do(&banks)
 	if err != nil {
 		return err
 	}

@@ -20,7 +20,7 @@ func FormAccountAdd(account *schema.Account) error {
 
 	db := db.Query()
 	products := make([]*schema.Product, 0)
-	err := db.Select(&products).Do()
+	err := db.SelectFrom("product").Do(&products)
 	if err != nil {
 		return err
 	}

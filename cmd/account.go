@@ -25,13 +25,13 @@ var accountCmd = &cobra.Command{
 		db := db.Query()
 
 		accounts := make([]*schema.Account, 0)
-		err = db.Select(&accounts).Do()
+		err = db.SelectFrom("account").Do(&accounts)
 		if err != nil {
 			panic(err)
 		}
 
 		products := make([]*schema.Product, 0)
-		err = db.Select(&products).Do()
+		err = db.SelectFrom("product").Do(&products)
 		if err != nil {
 			panic(err)
 		}

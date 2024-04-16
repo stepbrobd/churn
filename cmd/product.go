@@ -21,7 +21,7 @@ var productCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		db := db.Query()
 		products := make([]*schema.Product, 0)
-		err := db.Select(&products).Do()
+		err := db.SelectFrom("product").Do(&products)
 		if err != nil {
 			panic(err)
 		}

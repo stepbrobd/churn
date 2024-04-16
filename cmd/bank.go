@@ -22,7 +22,7 @@ var bankCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		db := db.Query()
 		banks := make([]*schema.Bank, 0)
-		err := db.Select(&banks).Do()
+		err := db.SelectFrom("bank").Do(&banks)
 		if err != nil {
 			panic(err)
 		}
