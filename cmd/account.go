@@ -19,7 +19,7 @@ import (
 var accountCmd = &cobra.Command{
 	Use:   "account",
 	Short: "Manage accounts (add, delete, edit)",
-	Long:  "Open a interactive TUI to manage account, add, delete, edit, etc.",
+	Long:  "Open an interactive TUI to manage account, add, delete, edit, etc.",
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		db := db.Query()
@@ -91,9 +91,9 @@ var accountCmd = &cobra.Command{
 // churn account add --
 var accountAddCmd = &cobra.Command{
 	Use:   "add",
-	Short: "Add a account",
-	Long:  "Add a account interactively, this will create a new account, and link it to the product.",
-	Args:  cobra.ExactArgs(0), // product alias
+	Short: "Add an account",
+	Long:  "Add an account interactively, this will create a new account, and link it to the product.",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		account := &schema.Account{}
 
@@ -111,8 +111,8 @@ var accountAddCmd = &cobra.Command{
 var forceAccountDeletion bool
 var accountDeleteCmd = &cobra.Command{
 	Use:   "delete <account id>",
-	Short: "Delete a account", // by account id
-	Long:  "Delete a account by its id, this will delete the account and all its associated data.",
+	Short: "Delete an account", // by account id
+	Long:  "Delete an account by its id, this will delete the account and all its associated data.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if !forceAccountDeletion {

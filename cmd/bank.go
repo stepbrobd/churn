@@ -18,7 +18,7 @@ import (
 var bankCmd = &cobra.Command{
 	Use:   "bank",
 	Short: "Manage banks (add, delete, edit)",
-	Long:  "Open a interactive TUI to manage banks, add, delete, edit, etc.",
+	Long:  "Open an interactive TUI to manage banks, add, delete, edit, etc.",
 	Run: func(cmd *cobra.Command, args []string) {
 		db := db.Query()
 		banks := make([]*schema.Bank, 0)

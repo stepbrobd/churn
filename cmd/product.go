@@ -17,7 +17,7 @@ import (
 var productCmd = &cobra.Command{
 	Use:   "product",
 	Short: "Manage product (add, delete, edit)",
-	Long:  "Open a interactive TUI to manage product, add, delete, edit, etc.",
+	Long:  "Open an interactive TUI to manage product, add, delete, edit, etc.",
 	Run: func(cmd *cobra.Command, args []string) {
 		db := db.Query()
 		products := make([]*schema.Product, 0)
