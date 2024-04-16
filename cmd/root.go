@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 	"ysun.co/churn/internal/config"
 	"ysun.co/churn/internal/db"
-	"ysun.co/churn/internal/migration"
 )
 
 func preRun(cmd *cobra.Command, args []string) error {
@@ -18,12 +17,6 @@ func preRun(cmd *cobra.Command, args []string) error {
 	}
 
 	err := db.Init(cfg)
-	if err != nil {
-		return err
-	}
-
-	// migrations are idempotent
-	err = migration.Exec()
 	if err != nil {
 		return err
 	}
