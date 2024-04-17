@@ -95,6 +95,39 @@ var rewardAddCmd = &cobra.Command{
 	},
 }
 
+// churn reward edit --
+var rewardEditCmd = &cobra.Command{
+	Use:   "edit <reward id>",
+	Short: "Edit a reward",
+	Long:  "Edit a reward by its ID, this will update the reward with the given ID",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		q := db.Query()
+		rewards := make([]*schema.Reward, 0)
+		err := q.SelectFrom("reward").Do(&rewards)
+		if err != nil {
+			fmt.Println("Failed to fetch rewards")
+			os.Exit(1)
+		}
+
+		reward := &schema.Reward{}
+		for _, r := range rewards {
+			if strconv.Itoa(r.ID) == args[0] {
+				reward = r
+			}
+		}
+
+		err = form.FormRewardAdd(reward)
+		if err != nil {
+			fmt.Println("Failed to edit reward")
+			os.Exit(1)
+		}
+
+		db, _ := db.Connect()
+		reward.Update(db)
+	},
+}
+
 // churn reward delete --
 var forceRewardDeletion bool
 var rewardDeleteCmd = &cobra.Command{
@@ -125,5 +158,6 @@ func init() {
 
 	rootCmd.AddCommand(rewardCmd)
 	rewardCmd.AddCommand(rewardAddCmd)
+	rewardCmd.AddCommand(rewardEditCmd)
 	rewardCmd.AddCommand(rewardDeleteCmd)
 }

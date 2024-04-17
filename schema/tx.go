@@ -25,17 +25,14 @@ func (t *Tx) Add(db *sql.DB) (sql.Result, error) {
 	}
 	t.ID = id
 
-	var note string
-	if !t.Note.Valid {
-		note = "NULL"
-	} else {
-		note = t.Note.String
-	}
-
-	// foreign key constraint enforced at frontend
 	stmt := "INSERT INTO tx (id, tx_timestamp, amount, category, note, account_id) VALUES (?, ?, ?, ?, ?, ?)"
 
-	return self.ExecInTx(db, stmt, t.ID, t.TxTimestamp, t.Amount, t.Category, note, t.AccountID)
+	return self.ExecInTx(db, stmt, t.ID, t.TxTimestamp, t.Amount, t.Category, t.Note.String, t.AccountID)
+}
+
+func (t *Tx) Update(db *sql.DB) (sql.Result, error) {
+	stmt := "UPDATE tx SET tx_timestamp = ?, amount = ?, category = ?, note = ?, account_id = ? WHERE id = ?"
+	return self.ExecInTx(db, stmt, t.TxTimestamp, t.Amount, t.Category, t.Note.String, t.AccountID, t.ID)
 }
 
 func (t *Tx) Delete(db *sql.DB) (sql.Result, error) {

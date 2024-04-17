@@ -2,6 +2,7 @@ package schema
 
 import (
 	"database/sql"
+	"fmt"
 
 	self "ysun.co/churn/internal/db"
 )
@@ -27,6 +28,15 @@ func (p *Product) Add(db *sql.DB) (sql.Result, error) {
 	stmt := "INSERT INTO product (id, product_alias, product_name, fee, issuing_bank) VALUES (?, ?, ?, ?, ?)"
 
 	return self.ExecInTx(db, stmt, p.ID, p.ProductAlias, p.ProductName, p.Fee, p.IssuingBank)
+}
+
+func (p *Product) Update(db *sql.DB) (sql.Result, error) {
+	if p.ID == 0 {
+		return nil, fmt.Errorf("id is required")
+	}
+
+	stmt := "UPDATE product SET product_name = ?, fee = ?, issuing_bank = ? WHERE product_alias = ?"
+	return self.ExecInTx(db, stmt, p.ProductName, p.Fee, p.IssuingBank, p.ProductAlias)
 }
 
 func (p *Product) Delete(db *sql.DB) (sql.Result, error) {

@@ -11,7 +11,12 @@ import (
 )
 
 func FormProductAdd(product *schema.Product) error {
-	var af string
+	af := func() string {
+		if product.Fee == 0 {
+			return ""
+		}
+		return strconv.FormatFloat(product.Fee, 'f', -1, 64)
+	}()
 	var confirm bool
 
 	db := db.Query()

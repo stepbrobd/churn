@@ -81,6 +81,40 @@ var bankAddCmd = &cobra.Command{
 	},
 }
 
+// churn bank edit --
+var bankEditCmd = &cobra.Command{
+	Use:   "edit <bank alias>",
+	Short: "Edit a bank", // bank alias
+	Long:  "Edit a bank by its alias, this will update the bank and its associated data.",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		q := db.Query()
+		banks := make([]*schema.Bank, 0)
+		err := q.SelectFrom("bank").Do(&banks)
+		if err != nil {
+			fmt.Println("Failed to fetch banks")
+			os.Exit(1)
+		}
+
+		bank := &schema.Bank{}
+		for _, b := range banks {
+			if b.BankAlias == args[0] {
+				bank = b
+				break
+			}
+		}
+
+		err = form.FormBankAdd(bank)
+		if err != nil {
+			fmt.Println("Failed to edit bank")
+			os.Exit(1)
+		}
+
+		db, _ := db.Connect()
+		bank.Update(db)
+	},
+}
+
 // churn bank delete --
 var forceBankDeletion bool
 var bankDeleteCmd = &cobra.Command{
@@ -138,6 +172,7 @@ func init() {
 
 	rootCmd.AddCommand(bankCmd)
 	bankCmd.AddCommand(bankAddCmd)
+	bankCmd.AddCommand(bankEditCmd)
 	bankCmd.AddCommand(bankDeleteCmd)
 	bankCmd.AddCommand(bankImportCmd)
 }

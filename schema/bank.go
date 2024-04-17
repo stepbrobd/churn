@@ -22,33 +22,19 @@ func (b *Bank) Add(db *sql.DB) (sql.Result, error) {
 		return nil, fmt.Errorf("bank_alias and bank_name are required")
 	}
 
-	// if max_account is not set, insert NULL
-	var maxAccount string
-	if !b.MaxAccount.Valid {
-		maxAccount = "NULL"
-	} else {
-		maxAccount = fmt.Sprintf("%d", b.MaxAccount.Int64)
-	}
-
-	// if max_account_period is not set, insert NULL
-	var maxAccountPeriod string
-	if !b.MaxAccountPeriod.Valid {
-		maxAccountPeriod = "NULL"
-	} else {
-		maxAccountPeriod = fmt.Sprintf("%d", b.MaxAccountPeriod.Int64)
-	}
-
-	// if max_account_scope is not set, insert NULL
-	var maxAccountScope string
-	if !b.MaxAccountScope.Valid {
-		maxAccountScope = "NULL"
-	} else {
-		maxAccountScope = fmt.Sprintf("'%s'", b.MaxAccountScope.String)
-	}
-
 	stmt := "INSERT INTO bank (bank_alias, bank_name, max_account, max_account_period, max_account_scope) VALUES (?, ?, ?, ?, ?)"
 
-	return self.ExecInTx(db, stmt, b.BankAlias, b.BankName, maxAccount, maxAccountPeriod, maxAccountScope)
+	return self.ExecInTx(db, stmt, b.BankAlias, b.BankName, b.MaxAccount.Int64, b.MaxAccountPeriod.Int64, b.MaxAccountScope.String)
+}
+
+func (b *Bank) Update(db *sql.DB) (sql.Result, error) {
+	// bank_alias is required
+	if b.BankAlias == "" {
+		return nil, fmt.Errorf("bank_alias is required")
+	}
+
+	stmt := "UPDATE bank SET bank_name = ?, max_account = ?, max_account_period = ?, max_account_scope = ? WHERE bank_alias = ?"
+	return self.ExecInTx(db, stmt, b.BankName, b.MaxAccount.Int64, b.MaxAccountPeriod.Int64, b.MaxAccountScope.String, b.BankAlias)
 }
 
 func (b *Bank) Delete(db *sql.DB) (sql.Result, error) {

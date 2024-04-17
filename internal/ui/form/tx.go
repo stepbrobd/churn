@@ -12,8 +12,18 @@ import (
 
 func FormTxAdd(tx *schema.Tx) error {
 	var err error
-	var amount string
-	var timestamp string
+	amount := func() string {
+		if tx.Amount == 0 {
+			return ""
+		}
+		return strconv.FormatFloat(tx.Amount, 'f', -1, 64)
+	}()
+	timestamp := func() string {
+		if tx.TxTimestamp.IsZero() {
+			return ""
+		}
+		return tx.TxTimestamp.Format("2006-01-02")
+	}()
 	var confirm bool
 
 	db := db.Query()

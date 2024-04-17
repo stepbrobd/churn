@@ -10,8 +10,18 @@ import (
 )
 
 func FormBankAdd(bank *schema.Bank) error {
-	var maxA string
-	var maxAP string
+	maxA := func() string {
+		if bank.MaxAccount.Int64 == 0 {
+			return ""
+		}
+		return strconv.FormatInt(bank.MaxAccount.Int64, 10)
+	}()
+	maxAP := func() string {
+		if bank.MaxAccountPeriod.Int64 == 0 {
+			return ""
+		}
+		return strconv.FormatInt(bank.MaxAccountPeriod.Int64, 10)
+	}()
 	var confirm bool
 
 	err := huh.NewForm(
@@ -29,14 +39,15 @@ func FormBankAdd(bank *schema.Bank) error {
 			huh.NewInput().
 				Title("Max Account").
 				Value(&maxA).
-				Validate(validator.IntConvertible),
+				Validate(validator.IntConvertibleNullable),
 			huh.NewInput().
 				Title("Max Account Period").
 				Value(&maxAP).
-				Validate(validator.IntConvertible),
+				Validate(validator.IntConvertibleNullable),
 			huh.NewSelect[string]().
 				Title("Max Account Scope").
 				Options(
+					huh.NewOption("None", ""),
 					huh.NewOption("All", "all"),
 					huh.NewOption("Bank", "bank"),
 				).

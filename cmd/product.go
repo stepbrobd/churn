@@ -78,6 +78,40 @@ var productAddCmd = &cobra.Command{
 	},
 }
 
+// churn product edit --
+var productEditCmd = &cobra.Command{
+	Use:   "edit <product alias>",
+	Short: "Edit a product", // product alias
+	Long:  "Edit a product by its alias, this will update the product with the given alias.",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		q := db.Query()
+		products := make([]*schema.Product, 0)
+		err := q.SelectFrom("product").Do(&products)
+		if err != nil {
+			fmt.Println("Failed to fetch products")
+			os.Exit(1)
+		}
+
+		product := &schema.Product{}
+		for _, p := range products {
+			if p.ProductAlias == args[0] {
+				product = p
+				break
+			}
+		}
+
+		err = form.FormProductAdd(product)
+		if err != nil {
+			fmt.Println("Failed to edit product")
+			os.Exit(1)
+		}
+
+		db, _ := db.Connect()
+		product.Update(db)
+	},
+}
+
 // churn product delete --
 var forceProductDeletion bool
 var productDeleteCmd = &cobra.Command{
@@ -134,6 +168,7 @@ func init() {
 
 	rootCmd.AddCommand(productCmd)
 	productCmd.AddCommand(productAddCmd)
+	productCmd.AddCommand(productEditCmd)
 	productCmd.AddCommand(productDeleteCmd)
 	productCmd.AddCommand(productImportCmd)
 }

@@ -52,7 +52,7 @@ var txCmd = &cobra.Command{
 			{Title: "Product", Width: 25},
 			{Title: "Amount", Width: 15},
 			{Title: "Category", Width: 15},
-			{Title: "Note", Width: 25},
+			// {Title: "Note", Width: 25},
 		}
 
 		rows := make([]table.Row, 0)
@@ -78,7 +78,7 @@ var txCmd = &cobra.Command{
 				product.ProductName,
 				fmt.Sprintf("$%.2f", tx.Amount),
 				tx.Category,
-				tx.Note.String,
+				// tx.Note.String,
 			})
 		}
 
@@ -113,6 +113,40 @@ var txAddCmd = &cobra.Command{
 	},
 }
 
+// churn tx edit --
+var txEditCmd = &cobra.Command{
+	Use:   "edit <tx id>",
+	Short: "Edit a transaction",
+	Long:  "Edit a transaction by its ID, this will update the transaction with the given ID",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		q := db.Query()
+		txs := make([]*schema.Tx, 0)
+		err := q.SelectFrom("tx").Do(&txs)
+		if err != nil {
+			fmt.Println("Failed to fetch transactions")
+			os.Exit(1)
+		}
+
+		tx := &schema.Tx{}
+		for _, t := range txs {
+			if strconv.Itoa(t.ID) == args[0] {
+				tx = t
+				break
+			}
+		}
+
+		err = form.FormTxAdd(tx)
+		if err != nil {
+			fmt.Println("Failed to edit transaction")
+			os.Exit(1)
+		}
+
+		db, _ := db.Connect()
+		tx.Update(db)
+	},
+}
+
 // churn tx delete --
 var forceTxDeletion bool
 var txDeleteCmd = &cobra.Command{
@@ -141,5 +175,6 @@ func init() {
 
 	rootCmd.AddCommand(txCmd)
 	txCmd.AddCommand(txAddCmd)
+	txCmd.AddCommand(txEditCmd)
 	txCmd.AddCommand(txDeleteCmd)
 }

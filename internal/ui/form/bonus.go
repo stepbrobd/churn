@@ -13,10 +13,30 @@ import (
 
 func FormBonusAdd(bonus *schema.Bonus) error {
 	var err error
-	var spend string
-	var amount string
-	var start string
-	var end string
+	spend := func() string {
+		if bonus.Spend == 0 {
+			return ""
+		}
+		return strconv.FormatFloat(bonus.Spend, 'f', -1, 64)
+	}()
+	amount := func() string {
+		if bonus.BonusAmount == 0 {
+			return ""
+		}
+		return strconv.FormatFloat(bonus.BonusAmount, 'f', -1, 64)
+	}()
+	start := func() string {
+		if bonus.BonusStart.IsZero() {
+			return ""
+		}
+		return bonus.BonusStart.Format("2006-01-02")
+	}()
+	end := func() string {
+		if bonus.BonusEnd.IsZero() {
+			return ""
+		}
+		return bonus.BonusEnd.Format("2006-01-02")
+	}()
 	var confirm bool
 
 	db := db.Query()
@@ -68,7 +88,7 @@ func FormBonusAdd(bonus *schema.Bonus) error {
 			huh.NewInput().
 				Title("Spending Requirement").
 				Value(&spend).
-				Validate(validator.FloatConvertible),
+				Validate(validator.FloatConvertibleNullable),
 			huh.NewInput().
 				Title("Bonus Amount").
 				Value(&amount).

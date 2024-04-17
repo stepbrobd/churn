@@ -44,6 +44,25 @@ func (a *Account) Add(db *sql.DB) (sql.Result, error) {
 	return self.ExecInTx(db, stmt, a.ID, a.ProductID, opened, closed, a.CL)
 }
 
+func (a *Account) Update(db *sql.DB) (sql.Result, error) {
+	var opened string
+	if !a.Opened.Valid {
+		opened = "NULL"
+	} else {
+		opened = a.Opened.Time.Format("2006-01-02") // based on docs
+	}
+
+	var closed string
+	if !a.Closed.Valid {
+		closed = "NULL"
+	} else {
+		closed = a.Closed.Time.Format("2006-01-02") // based on docs
+	}
+
+	stmt := "UPDATE account SET product_id = ?, opened = ?, closed = ?, cl = ? WHERE id = ?"
+	return self.ExecInTx(db, stmt, a.ProductID, opened, closed, a.CL, a.ID)
+}
+
 func (a *Account) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM account WHERE id = ?"
 	return self.ExecInTx(db, stmt, a.ID)

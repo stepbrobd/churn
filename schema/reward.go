@@ -27,6 +27,11 @@ func (r *Reward) Add(db *sql.DB) (sql.Result, error) {
 	return self.ExecInTx(db, stmt, r.ID, r.Category, r.Unit, r.Reward, r.ProductID)
 }
 
+func (r *Reward) Update(db *sql.DB) (sql.Result, error) {
+	stmt := "UPDATE reward SET category = ?, unit = ?, reward = ?, product_id = ? WHERE id = ?"
+	return self.ExecInTx(db, stmt, r.Category, r.Unit, r.Reward, r.ProductID, r.ID)
+}
+
 func (r *Reward) Delete(db *sql.DB) (sql.Result, error) {
 	stmt := "DELETE FROM reward WHERE id = ?"
 	return self.ExecInTx(db, stmt, r.ID)

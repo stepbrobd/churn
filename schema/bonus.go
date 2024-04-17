@@ -2,6 +2,7 @@ package schema
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	self "ysun.co/churn/internal/db"
@@ -30,6 +31,15 @@ func (b *Bonus) Add(db *sql.DB) (sql.Result, error) {
 	stmt := "INSERT INTO bonus (id, bonus_type, spend, bonus_amount, unit, bonus_start, bonus_end, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
 	return self.ExecInTx(db, stmt, b.ID, b.BonusType, b.Spend, b.BonusAmount, b.Unit, b.BonusStart, b.BonusEnd, b.AccountID)
+}
+
+func (b *Bonus) Update(db *sql.DB) (sql.Result, error) {
+	if b.ID == 0 {
+		return nil, fmt.Errorf("id is required")
+	}
+
+	stmt := "UPDATE bonus SET bonus_type = ?, spend = ?, bonus_amount = ?, unit = ?, bonus_start = ?, bonus_end = ?, account_id = ? WHERE id = ?"
+	return self.ExecInTx(db, stmt, b.BonusType, b.Spend, b.BonusAmount, b.Unit, b.BonusStart, b.BonusEnd, b.AccountID, b.ID)
 }
 
 func (b *Bonus) Delete(db *sql.DB) (sql.Result, error) {

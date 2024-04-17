@@ -117,6 +117,40 @@ var bonusAddCmd = &cobra.Command{
 	},
 }
 
+// churn bonus edit --
+var bonusEditCmd = &cobra.Command{
+	Use:   "edit <bonus id>",
+	Short: "Edit a bonus",
+	Long:  "Edit a bonus by its ID, this will update the bonus and its associated data",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		q := db.Query()
+		bonuses := make([]*schema.Bonus, 0)
+		err := q.SelectFrom("bonus").Do(&bonuses)
+		if err != nil {
+			fmt.Println("Failed to fetch bonuses")
+			os.Exit(1)
+		}
+
+		bonus := &schema.Bonus{}
+		for _, b := range bonuses {
+			if strconv.Itoa(b.ID) == args[0] {
+				bonus = b
+				break
+			}
+		}
+
+		err = form.FormBonusAdd(bonus)
+		if err != nil {
+			fmt.Println("Failed to edit bonus")
+			os.Exit(1)
+		}
+
+		db, _ := db.Connect()
+		bonus.Update(db)
+	},
+}
+
 // churn bonus delete --
 var forceBonusDeletion bool
 var bonusDeleteCmd = &cobra.Command{
@@ -147,5 +181,6 @@ func init() {
 
 	rootCmd.AddCommand(bonusCmd)
 	bonusCmd.AddCommand(bonusAddCmd)
+	bonusCmd.AddCommand(bonusEditCmd)
 	bonusCmd.AddCommand(bonusDeleteCmd)
 }

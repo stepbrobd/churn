@@ -11,7 +11,12 @@ import (
 )
 
 func FormRewardAdd(reward *schema.Reward) error {
-	var amount string
+	amount := func() string {
+		if reward.Reward == 0 {
+			return ""
+		}
+		return strconv.FormatFloat(reward.Reward, 'f', -1, 64)
+	}()
 	var confirm bool
 
 	db := db.Query()

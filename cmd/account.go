@@ -107,7 +107,45 @@ var accountAddCmd = &cobra.Command{
 		}
 
 		db, _ := db.Connect()
-		account.Add(db)
+		_, err = account.Add(db)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// churn account edit --
+var accountEditCmd = &cobra.Command{
+	Use:   "edit <account id>",
+	Short: "Edit an account",
+	Long:  "Edit an account by its id, this will update the account and its associated data.",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		q := db.Query()
+		accounts := make([]*schema.Account, 0)
+		err := q.SelectFrom("account").Do(&accounts)
+		if err != nil {
+			fmt.Println("Failed to fetch accounts")
+			os.Exit(1)
+		}
+
+		id, _ := strconv.Atoi(args[0])
+		account := &schema.Account{}
+		for _, a := range accounts {
+			if a.ID == id {
+				account = a
+				break
+			}
+		}
+
+		err = form.FormAccountAdd(account)
+		if err != nil {
+			fmt.Println("Failed to edit account")
+			os.Exit(1)
+		}
+
+		conn, _ := db.Connect()
+		account.Update(conn)
 	},
 }
 
@@ -142,5 +180,6 @@ func init() {
 
 	rootCmd.AddCommand(accountCmd)
 	accountCmd.AddCommand(accountAddCmd)
+	accountCmd.AddCommand(accountEditCmd)
 	accountCmd.AddCommand(accountDeleteCmd)
 }

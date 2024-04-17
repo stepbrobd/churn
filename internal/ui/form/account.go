@@ -13,9 +13,24 @@ import (
 )
 
 func FormAccountAdd(account *schema.Account) error {
-	var cl string
-	var opened string
-	var closed string
+	cl := func() string {
+		if account.CL == 0 {
+			return ""
+		}
+		return strconv.FormatFloat(account.CL, 'f', -1, 64)
+	}()
+	opened := func() string {
+		if !account.Opened.Valid {
+			return ""
+		}
+		return account.Opened.Time.Format("2006-01-02")
+	}()
+	closed := func() string {
+		if !account.Closed.Valid {
+			return ""
+		}
+		return account.Closed.Time.Format("2006-01-02")
+	}()
 	var confirm bool
 
 	db := db.Query()
