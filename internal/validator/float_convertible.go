@@ -11,3 +11,10 @@ func FloatConvertible(s string) error {
 	}
 	return nil
 }
+
+func FloatConvertibleNullable(s string) error {
+	if s == "" {
+		return nil
+	}
+	return FloatConvertible(s)
+}

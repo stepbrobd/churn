@@ -11,3 +11,10 @@ func IntConvertible(s string) error {
 	}
 	return nil
 }
+
+func IntConvertibleNullable(s string) error {
+	if s == "" {
+		return nil
+	}
+	return IntConvertible(s)
+}
