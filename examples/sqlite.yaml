@@ -1,0 +1,4 @@
+db:
+  driver: sqlite3
+  # optional:
+  # dsn: file://~/.local/share/churn/churn.db

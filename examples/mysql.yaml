@@ -1,0 +1,5 @@
+db:
+  driver: mysql
+  # if using mysql, you must provide a dsn
+  # `parseTime=true` must be set to parse MySQL DATETIME values into Go time.Time
+  dsn: root:mysql@tcp(localhost:3306)/churn?parseTime=true
