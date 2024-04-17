@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS tx
     tx_timestamp DATETIME NOT NULL,
     amount DECIMAL NOT NULL,
     category VARCHAR(64) NOT NULL,
-    note VARCHAR(255),
+    note TEXT,
     account_id INT NOT NULL,
     FOREIGN KEY (account_id) REFERENCES account (
         id
