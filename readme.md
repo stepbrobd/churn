@@ -108,64 +108,9 @@ Transactions are made by accounts and are used to track the user's spending and 
 
 ## Logical Design
 
-```mermaid
-classDiagram
-direction BT
-class account {
-   int product_id
-   datetime opened
-   datetime closed
-   decimal(10) cl
-   int id
-}
-class bank {
-   varchar(255) bank_name
-   int max_account
-   int max_account_period
-   varchar(64) max_account_scope
-   varchar(64) bank_alias
-}
-class bonus {
-   varchar(64) bonus_type
-   decimal(10) spend
-   decimal(10) bonus_amount
-   varchar(64) unit
-   datetime bonus_start
-   datetime bonus_end
-   int account_id
-   int id
-}
-class product {
-   varchar(64) product_alias
-   varchar(255) product_name
-   decimal(10) fee
-   varchar(64) issuing_bank
-   int id
-}
-class reward {
-   varchar(64) category
-   varchar(64) unit
-   decimal(10) reward
-   int product_id
-   int id
-}
-class tx {
-   datetime tx_timestamp
-   decimal(10) amount
-   varchar(64) category
-   text note
-   int account_id
-   int id
-}
+![ERD](examples/churn.png)
 
-account  -->  product : product_id:id
-bonus  -->  account : account_id:id
-product  -->  bank : issuing_bank:bank_alias
-reward  -->  product : product_id:id
-tx  -->  account : account_id:id
-```
-
-Exported from DataGrip's ERD (export to Mermaid).
+Exported from DataGrip's ERD.
 
 ## User Flow
 
