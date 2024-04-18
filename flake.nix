@@ -29,6 +29,13 @@
         version = self.shortRev or self.dirtyShortRev;
         src = ./.;
         modules = ./gomod2nix.toml;
+        nativeBuildInputs = [ pkgs.installShellFiles ];
+        postInstall = ''
+          installShellCompletion --cmd churn \
+            --bash <($out/bin/churn completion bash) \
+            --fish <($out/bin/churn completion fish) \
+            --zsh <($out/bin/churn completion zsh)
+        '';
       };
 
       apps.default = flake-utils.lib.mkApp {
