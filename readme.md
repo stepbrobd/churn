@@ -200,6 +200,35 @@ Exported from DataGrip's ERD.
 7. Display statistics (optional)
 8. Migrations (optional, not fully implemented, future work)
 
+## [Onefetch](https://github.com/o2sh/onefetch)
+
+```shell
+           --==============--              Yifei Sun ~ git version 2.44.0
+  .-==-.===oooo=oooooo=ooooo===--===-      ------------------------------
+ .==  =o=oGGGGGGo=oo=oGGGGGGGG=o=  oo-     Project: churn (4 branches)
+ -o= oo=G .=GGGGGo=o== .=GGGGG=ooo o=-     HEAD: bad453b (master, origin/master)
+  .-=oo=o==oGGGGG=oo=oooGGGGGo=oooo.       Pending: 1+
+   -ooooo=oooooo=.   .==ooo==oooooo-       Created: 2 months ago
+   -ooooooooooo====_====ooooooooooo=       Languages:                            
+   -oooooooooooo==#.#==ooooooooooooo                  ● Go (97.1 %) ● Nix (2.8 %)
+   -ooooooooooooo=#.#=oooooooooooooo                  ● Dockerfile (0.1 %) 
+   .oooooooooooooooooooooooooooooooo.      Author: 100% Yifei Sun 71
+    oooooooooooooooooooooooooooooooo.      Last change: 25 seconds ago
+  ..oooooooooooooooooooooooooooooooo..     URL: git@github.com:stepbrobd/churn
+-=o-=ooooooooooooooooooooooooooooooo-oo.   Commits: 71
+.=- oooooooooooooooooooooooooooooooo-.-    Churn (1): readme.md 1
+   .oooooooooooooooooooooooooooooooo-      Lines of code: 2295
+   -oooooooooooooooooooooooooooooooo-      Size: 4.01 MiB (58 files)
+   -oooooooooooooooooooooooooooooooo-      
+   -oooooooooooooooooooooooooooooooo-                              
+   .oooooooooooooooooooooooooooooooo    
+    =oooooooooooooooooooooooooooooo-    
+    .=oooooooooooooooooooooooooooo-     
+      -=oooooooooooooooooooooooo=.      
+     =oo====oooooooooooooooo==-oo=-     
+    .-==-    .--=======---     .==-
+```
+
 ## License
 
 The contents inside this repository, excluding all submodules, are licensed under the [MIT License](license.txt).
