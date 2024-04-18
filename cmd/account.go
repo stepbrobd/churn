@@ -107,10 +107,7 @@ var accountAddCmd = &cobra.Command{
 		}
 
 		db, _ := db.Connect()
-		_, err = account.Add(db)
-		if err != nil {
-			panic(err)
-		}
+		account.Add(db)
 	},
 }
 
