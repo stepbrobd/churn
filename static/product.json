@@ -11,5 +11,10 @@
     {"product_alias": "c1_vx", "product_name": "Capital One Venture X", "fee": 395.00, "issuing_bank": "c1"},
     {"product_alias": "discover_it", "product_name": "Discover it", "fee": 0.00, "issuing_bank": "discover"},
     {"product_alias": "discover_im", "product_name": "Discover it Miles", "fee": 0.00, "issuing_bank": "discover"},
-    {"product_alias": "uar", "product_name": "U.S. Bank Altitude Reserve", "fee": 400.00, "issuing_bank": "usb"}
+    {"product_alias": "uar", "product_name": "U.S. Bank Altitude Reserve", "fee": 400.00, "issuing_bank": "usb"},
+    {"product_alias": "uac", "product_name": "U.S. Bank Altitude Connect", "fee": 95.00, "issuing_bank": "usb"},
+    {"product_alias": "cff", "product_name": "Chase Freedom Flex", "fee": 0.00, "issuing_bank": "jpmc"},
+    {"product_alias": "cfu", "product_name": "Chase Freedom Unlimited", "fee": 0.00, "issuing_bank": "jpmc"},
+    {"product_alias": "csp", "product_name": "Chase Sapphire Preferred", "fee": 95.00, "issuing_bank": "jpmc"},
+    {"product_alias": "csr", "product_name": "Chase Sapphire Reserve", "fee": 550.00, "issuing_bank": "jpmc"}
 ]
