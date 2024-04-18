@@ -62,6 +62,75 @@ stat        -- Show statistics
 tx          -- Manage transactions (add, delete, edit)
 ```
 
+## Configuration
+
+Relevant code: [`internal/config/config.go`](internal/config/config.go)
+
+By default, `churn` follows the XDG Base Directory Specification.
+The configuration file is located at `$XDG_CONFIG_HOME/churn/churn.yaml` or `$HOME/.config/churn/churn.yaml`.
+
+By default, `churn` uses SQLite3 as the database, and the database file is located at `$XDG_DATA_HOME/churn/churn.db` or `$HOME/.local/share/churn/churn.db`.
+To use MySQL, set the the database driver to `mysql` and set the DSN to the MySQL connection string.
+
+For example, to use MySQL, set the configuration file as follows:
+
+```yaml
+db:
+  driver: mysql
+  # if using mysql, you must provide a dsn
+  # `parseTime=true` must be set to parse MySQL DATETIME values into Go time.Time
+  # username is root, password is mysql, host is localhost, port is 3306, database is churn
+  dsn: root:mysql@tcp(localhost:3306)/churn?parseTime=true
+```
+
+If you want to use SQLite3, the configuration is optional, and the default configuration is:
+
+```yaml
+db:
+  driver: sqlite3
+  # optional:
+  dsn: file://~/.local/share/churn/churn.db
+```
+
+To make `churn` even more configurable, you can use environment variables to override the configuration file (environment variables have higher priority than the configuration file).
+
+Available environment variables:
+
+- `CHURN_CONFIG_PATH`: the configuration file path (default: `$HOME/.config/churn`)
+- `CHURN_CONFIG_SRC`: the configuration file name (default: `churn.yaml`)
+- `CHURN_DB_DRIVER`: the database driver (available values: `sqlite3`, `mysql`, default: `sqlite3`)
+- `CHURN_DB_DSN`: the database connection string (default: `file://~/.local/share/churn/churn.db` for SQLite3, no default for MySQL)
+
+To temporarily override the configuration file with environment variables, example:
+
+```shell
+CHURN_DB_DRIVER=mysql CHURN_DB_DSN=root:mysql@tcp(localhost:3306)/churn?parseTime=true churn <command>
+```
+
+## Static Content
+
+In general, banks and product offerings are static and do not change frequently.
+
+For the ease of use, users can import banks and products from a JSON file.
+
+Local import:
+
+```shell
+churn bank import ./static/bank.json
+# and/or
+churn product import ./static/product.json
+```
+
+Remote import (hosted on <https://churn.cards>):
+
+```shell
+churn bank import https://churn.cards/bank.json
+# and/or
+churn product import https://churn.cards/product.json
+```
+
+See the files in the `static` directory for the JSON format.
+
 ## Conceptual Design
 
 ```txt
